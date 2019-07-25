@@ -1,25 +1,28 @@
 const notificationReducer = (state = null, action) => {
   switch (action.type) {
-    case 'ADDED_LIKE':
-      return action.notification
-    case 'REMOVE':
+    case 'NEW_NOTIFICATION':
+      return action.message
+    case 'CLEAR':
       return null
     default:
       return state
   }
 }
 
-export const addNotification = notification => {
-  return ({
-    type: 'ADDED_LIKE',
-    notification
-  })
-}
+export const setNotification = (message, time) => {
+  return async dispatch => {
+    await dispatch({
+      type: 'NEW_NOTIFICATION',
+      message
+    })
 
-export const removeNotification = () => {
-  return ({
-    type: 'REMOVE',
-  })
+    await setTimeout(() => {
+      dispatch({
+        type: 'CLEAR',
+      })
+    }, time * 1000)
+
+  }
 }
 
 export default notificationReducer
